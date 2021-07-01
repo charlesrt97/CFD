@@ -1,3 +1,5 @@
+// Riemann solver used: HLLC along with the Godunov scheme
+
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
