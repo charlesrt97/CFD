@@ -1,3 +1,5 @@
+Riemann solver used: Rusanov method
+
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
