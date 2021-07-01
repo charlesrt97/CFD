@@ -1,4 +1,4 @@
-Riemann solver used: Rusanov method
+// Riemann solver used: Rusanov method
 
 #include <cstdlib>
 #include <fstream>
