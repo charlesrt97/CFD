@@ -1,3 +1,6 @@
+// Riemann solver used: HLLC 2nd order, along with the Godunov scheme
+// Slope limiter: minmod
+
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
