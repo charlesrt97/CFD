@@ -9,7 +9,7 @@ using namespace std;
 
 /******************************************************************************/
 
-// Parámetros constantes de la simulación
+// constant parameters used for the simulation
 const int    NX = 400;         // mesh size
 const double XL = 0.0;         // left physical coordinate
 const double XR = 1.0;         // right physical coordinate
