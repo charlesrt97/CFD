@@ -144,7 +144,7 @@ void primitivas(double U[ieq][NX+2], double P[ieq][NX+2]) {
 
 }
 
-// Calcular los flujos FÍSICOS F !tambien se incluyen las celdas fantasma
+// computes physical fluxes, including ghost cells
 void fluxes(double P[ieq][NX+2], double F[ieq][NX+2]) {
 
   for (int i=0; i<=NX+1;i++) {
@@ -158,15 +158,15 @@ void fluxes(double P[ieq][NX+2], double F[ieq][NX+2]) {
 
 /******************************************************************************/
 
-// Calcula el paso de tiempo resultante de la condición CFL
+// computes new time step resulting from the CFL condition
 double timestep(double P[ieq][NX+2]) {
 
   double dt;
 
-  // Para advección, max_u es simplemente A
-  //double max_speed = abs(A);
+  // for advection eq., max_u is simply A
+  // double max_speed = abs(A);
 
-  // Para otros casos, debe calcular el valor máximo de |velocidad|
+  // for other cases, we shall compute the maximum value abs(vel)
   double max_speed = 0.0;
   double cs;
   double k;
@@ -184,11 +184,10 @@ double timestep(double P[ieq][NX+2]) {
 
 /******************************************************************************/
 
-// Aplica el método de Lax para obtener las UP a partir de las U
-// Supone que los flujos F ya fueron actualizados
+// applies the HLLC method to obtain the intercell numerical fluxes
 void HLLC(double P[ieq][NX+2], double U[ieq][NX+2], double F[ieq][NX+2], double Fhllc[ieq][NX+2]) {
 
-// va de 0 a NX
+// from 0 to NX
 
 double sl, sr, s_star, U_star_l, U_star_r;
 double csr, csl;
@@ -243,7 +242,7 @@ double csr, csl;
       }
 
 
-      // FLUJOS NUMERICOS INTERCELDA
+      // intercell numerical fluxes
       if (sl >= 0) {
         Fhllc[iieq][i] = F[iieq][i];
       }
@@ -264,8 +263,6 @@ double csr, csl;
 
 void godunov(double U[ieq][NX+2], double Fhllc[ieq][NX+2], double UP[ieq][NX+2]) {
 
-// va de 1 a NX (flujos fisicos)
-
   for (int i=1; i<=NX; i++){
     for (int iieq=0; iieq<=ieq-1; iieq++){
 
@@ -277,7 +274,7 @@ void godunov(double U[ieq][NX+2], double Fhllc[ieq][NX+2], double UP[ieq][NX+2])
 
 /******************************************************************************/
 
-// Hace un paso de tiempo, volcando las UPs sobre las Us y avanzando variables
+// this represents one complete time step
 void step(double U[ieq][NX+2], double UP[ieq][NX+2]) {
 
   for (int i = 0; i <= NX+1; i++) {
@@ -297,40 +294,40 @@ void step(double U[ieq][NX+2], double UP[ieq][NX+2]) {
 
 int main() {
 
-  // Condición inicial e inicializaciones
+  // initial conditions and initializes variables
   initflow(U);
 
   primitivas(U,P);
 
-  // Escribir condición inicial a disco
+  // writes initial conditions to disk
   output(P);
 
-  // Tiempo de inicio de la simulación
+  // simulation's initial time
   start = clock();
   while (t <= TFIN) {
 
+     // updates primitives
     primitivas(U,P);
 
-    // Actualizar el paso de tiempo
+    // updates time step
     dt = timestep(P);
 
-    // Actualizar flujos físicos
+    // updates phyisical fluxes
     fluxes(P, F);
 
-    // Aplicar método de Lax para actualizar las UP
-    //Lax(U, F, UP);
-
+    // applies HLLC method
     HLLC(P,U,F,Fhllc);
-
+    
+    // applies godunov's scheme
     godunov(U,Fhllc,UP);
 
-    // Aplicar condiciones de frontera a las UP
+    // applies boundary conditions to the UP-variables
     boundary(UP);
 
-    // Avanzar en el tiempo
+    // this represents one complete time step
     step(U, UP);
 
-    // Escribir a disco
+    // writes to disk
     if (t >= tprint) {
       primitivas(U,P);
       output(P);
@@ -338,7 +335,7 @@ int main() {
 
   }
 
-// Terminar
+// end
 cout << "\nSe calcularon " << it << " iteraciones en "
      << (double)(clock() - start)/CLOCKS_PER_SEC << "s.\n\n";
 }
