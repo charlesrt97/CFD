@@ -8,9 +8,8 @@
 using namespace std;
 
 /******************************************************************************/
-// CONSTANTES Y VARIABLES GLOBALES
 
-// Parámetros constantes de la simulación
+// constant parameters used for the simulation
 const int    NX = 400;         // Tamaño de la malla
 const double XL = 0.0;         // Coordenada física del extremo izquierdo
 const double XR = 1.0;         // Coordenada física del extremo derecho
@@ -22,40 +21,40 @@ const double gam=1.4;
 
 const int ieq=3;
 
-// Para tubo de choque: coord de la separación entre estados iniciales
+// for the schock-tube: coordinate of separation between initial states
 const double X0 = 0.5;
 
-// Para ecuación de advección: velocidad de ondas ('a' en las notas)
+// for advection: wave's velocity
 const double A = 1.0;
 
 // Constantes derivadas de las anteriores
-const double DX = (XR-XL)/NX;      // Espaciamiento de la malla
+const double DX = (XR-XL)/NX;      // space between nodes
 
 // Variables globales
-double U[ieq][NX+2];       // Variables conservadas actuales
-double UP[ieq][NX+2];      // Variables conservadas "avanzadas"
-double F[ieq][NX+2];       // Flujos físicos
+double U[ieq][NX+2];       // "current" conservative variables
+double UP[ieq][NX+2];      // "advanced" conservative variables
+double F[ieq][NX+2];       // physical fluxes
 double P[ieq][NX+2];
 double Fhllc[ieq][NX+2];
 
 double csr[ieq][NX+2];
 double csl[ieq][NX+2];
 
-double dt;            // Paso de tiempo
-double t;          // Tiempo actual
-int it;               // Iteración actual
-clock_t start;        // Tiempo de inicio
-double tprint;        // Tiempo para el siguiente output
-int itprint;          // Número de salida
+double dt;            // time step
+double t;          // currrent time
+int it;               // current iteration
+clock_t start;        // initial time
+double tprint;        // time for the following output
+int itprint;          // output number
 
 
 /******************************************************************************/
 
-// Impone las condiciones iniciales
+// sets initial conditions
 void initflow(double U[ieq][NX+2]) {
 
-  // Inicializar los valores de U en todo el dominio
-  // Nótese que también llenamos las celdas fantasma
+// initialize U in all the domain
+// including ghost cells
 double x, rho, u, pres;
 const double rhol=1.0;
 const double ul=0.0;
@@ -82,7 +81,7 @@ const double pres_r=0.1;
   }
 
 
-  // Inicializar otras variables
+  // Initialize other variables
   t = 0;
   it = 0;
   itprint = 0;
@@ -92,29 +91,28 @@ const double pres_r=0.1;
 
 /******************************************************************************/
 
-// Escribe a disco el estado de la simulación
+// writes to disk the state of the simulation
 void output(double P[ieq][NX+2]) {
 
-  // Generar el nombre del archivo de salida
+  // generates output file's name
   char fname[80];
   sprintf(fname, "Lax_%02i.txt", itprint);
 
-  // Abrir el archivo
+  // opens the file
   fstream fout(fname, ios::out);
 
-  // Escribir los valores de U al archivo
+  // writes U values to disk
   double x;
   for (int i=1; i <= NX; i++) {
     x = XL + i*DX;
     fout << x << " " << P[0][i] << " " << P[1][i] << " " << P[2][i] << " " << endl;
   }
 
-  // Cerrar archivo
+  // closes the file
   fout.close();
 
   printf("Se escribió salida %s\n", fname);
 
-  // Avanzar variables de output
   itprint = itprint + 1;
   tprint = itprint * dtprint;
 
@@ -122,8 +120,7 @@ void output(double P[ieq][NX+2]) {
 
 /******************************************************************************/
 
-// Aplicar condiciones de frontera a celdas fantasma
-// El arreglo pasado es al que aplicaremos las BCs
+// applies boundary conditions to ghost cells
 void boundary(double U[ieq][NX+2]) {
 
   for(int iieq=0; iieq<=ieq-1;iieq++){
@@ -134,7 +131,7 @@ void boundary(double U[ieq][NX+2]) {
 
 /******************************************************************************/
 
-// Calcular los flujos físicos F !tambien se incluyen las celdas fantasma
+// computes primitives, including ghost cells
 void primitivas(double U[ieq][NX+2], double P[ieq][NX+2]) {
 
   for (int i=0; i<=NX+1;i++) {
