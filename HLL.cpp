@@ -31,7 +31,7 @@ const double DX = (XR-XL)/NX;      // space between nodes
 
 // global variables
 double U[ieq][NX+2];       // "actual" conservative variables
-double UP[ieq][NX+2];      // "advanced" conserved variables
+double UP[ieq][NX+2];      // "advanced" conservative variables
 double F[ieq][NX+2];       // physical fluxes
 double P[ieq][NX+2];
 double Fhll[ieq][NX+2];
