@@ -30,14 +30,14 @@ const double A = 1.0;
 const double DX = (XR-XL)/NX;      // space between nodes
 
 // global variables
-double U[ieq][NX+2];       // "actual" conservative variables
+double U[ieq][NX+2];       // "current" conservative variables
 double UP[ieq][NX+2];      // "advanced" conservative variables
 double F[ieq][NX+2];       // physical fluxes
 double P[ieq][NX+2];
 double Fhll[ieq][NX+2];
 double dt;            // time step
-double t;             // actual time
-int it;               // actual interation
+double t;             // current time
+int it;               // current interation
 clock_t start;        // initial time
 double tprint;        // time for the following output
 int itprint;          // output number
