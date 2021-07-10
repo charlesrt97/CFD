@@ -194,7 +194,7 @@ double ll,rr,lamb;
       sl=min(P[1][i]-csl,P[1][i+1]-csr);
       sr=max(P[1][i]+csl,P[1][i+1]+csr);
 
-      // intercell numerical fluxes
+      // numerical intercell fluxes
       if (sl > 0){
         Fhll[iieq][i]=F[iieq][i];
       }
