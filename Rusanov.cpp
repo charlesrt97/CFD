@@ -276,7 +276,7 @@ int main() {
 
   }
 
-// emd
+// end
 cout << "\nSe calcularon " << it << " iteraciones en "
      << (double)(clock() - start)/CLOCKS_PER_SEC << "s.\n\n";
 }
