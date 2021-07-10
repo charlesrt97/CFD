@@ -136,11 +136,11 @@ void output(double P[ieq][NX+4]) {
 void boundary(double U[ieq][NX+4]) {
 
   for(int iieq=0; iieq<=ieq-1;iieq++){
-    U[iieq][0]=U[iieq][2]; // 1era celda fantasma
-    U[iieq][1]=U[iieq][2]; // 2da celda fantasma
+    U[iieq][0]=U[iieq][2]; // 1st ghost cell
+    U[iieq][1]=U[iieq][2]; // 2nd ghost cell
 
-    U[iieq][NX+2]=U[iieq][NX+1]; // penultima celda fantasma
-    U[iieq][NX+3]=U[iieq][NX+1]; // ultima celda fantasma
+    U[iieq][NX+2]=U[iieq][NX+1]; 
+    U[iieq][NX+3]=U[iieq][NX+1];
 
   }
 }
