@@ -28,10 +28,9 @@ const double X0 = 0.5;
 // for advection: wave's velocity
 const double A = 1.0;
 
-// Constantes derivadas de las anteriores
 const double DX = (XR-XL)/NX;      // space between nodes
 
-// Variables globales
+// global variables
 double U[ieq][NX+4];       // "current" conservative variables
 double UP[ieq][NX+4];      // "advanced" conservative variables
 double F[ieq][NX+4];       // physical fluxes
