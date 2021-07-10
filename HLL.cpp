@@ -179,7 +179,7 @@ double timestep(double P[ieq][NX+2]) {
 
 /******************************************************************************/
 
-// applies the HLL method to obtain the intercell numerical fluxes
+// applies the HLL method to obtain the numerical intercell fluxes
 void HLL(double P[ieq][NX+2], double U[ieq][NX+2], double F[ieq][NX+2], double Fhll[ieq][NX+2]) {
 
 double sl,sr,csl,csr;
