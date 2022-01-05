@@ -1,4 +1,4 @@
-// Riemann solver used: HLL (Harten, Lax & van Leer)
+// Riemann solver implemented: HLL (Harten, Lax & van Leer)
 
 #include <cstdlib>
 #include <fstream>
