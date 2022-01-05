@@ -1,4 +1,4 @@
-// Riemann solver used: HLLC along with the Godunov scheme
+// Riemann solver implemented: HLLC along with the Godunov scheme
 
 #include <cstdlib>
 #include <fstream>
