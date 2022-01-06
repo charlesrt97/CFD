@@ -64,7 +64,7 @@ int itprint;          // output number
 // sets initial conditions
 void initflow(double U[ieq][NX+4]) {
 
-// initialize U in all the domain
+// initializes U in all the domain
 // including ghost cells
 double x, rho, u, pres;
 const double rhol=1.0;
@@ -92,7 +92,7 @@ const double pres_r=0.1;
   }
 
 
-  // Initialize other variables
+  // Initializes other variables
   t = 0;
   it = 0;
   itprint = 0;
@@ -122,7 +122,7 @@ void output(double P[ieq][NX+4]) {
   // closes the file
   fout.close();
 
-  printf("Se escribió salida %s\n", fname);
+  printf("Output %s\n", fname);
 
   itprint = itprint + 1;
   tprint = itprint * dtprint;
@@ -147,7 +147,7 @@ void boundary(double U[ieq][NX+4]) {
 /******************************************************************************/
 
 // computes primitives, including ghost cells
-void primitivas1(double U[ieq][NX+4], double P[ieq][NX+4]) {
+void primitives1(double U[ieq][NX+4], double P[ieq][NX+4]) {
 
   for (int i=0; i<=NX+3;i++) {
     //F[i]=A*U[i];
@@ -424,7 +424,7 @@ int main() {
   // initial conditions and initializes variables
   initflow(U);
 
-  primitivas1(U,P);
+  primitives1(U,P);
 
   // writes initial conditions to disk
   output(P);
@@ -433,7 +433,7 @@ int main() {
   start = clock();
   while (t <= TFIN) {
 
-    primitivas1(U,P);
+    primitives1(U,P);
 
     // updates time step
     dt = timestep(P);
@@ -452,7 +452,7 @@ int main() {
 
     // second sub-time step
 
-    primitivas1(UP,P); // updates UP using P
+    primitives1(UP,P); // updates UP using P
 
     MUSCL(P, Fhllc1); // computes numerical fluxes
 
@@ -464,13 +464,13 @@ int main() {
 
     // writes to disk
     if (t >= tprint) {
-      primitivas1(U,P); // computes primitives
+      primitives1(U,P); // computes primitives
       output(P); // writes to disk primitives
     }
 
   }
 
 // end
-cout << "\nSe calcularon " << it << " iteraciones en "
+cout << "\n Number of iterations: " << it << ". Time: "
      << (double)(clock() - start)/CLOCKS_PER_SEC << "s.\n\n";
 }
