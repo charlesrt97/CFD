@@ -10,12 +10,12 @@ using namespace std;
 /******************************************************************************/
 
 // constant parameters used for the simulation
-const int    NX = 400;         // Tamaño de la malla
-const double XL = 0.0;         // Coordenada física del extremo izquierdo
-const double XR = 1.0;         // Coordenada física del extremo derecho
-const double TFIN = 0.2;       // Tiempo final de integración
-const double CFL = 0.9;        // Parametro de Courant
-const double dtprint = 0.005;   // Intervalo para escribir a disco
+const int    NX = 400;         // mesh size
+const double XL = 0.0;         // left phyisical coordinate
+const double XR = 1.0;         // right physical coordinate
+const double TFIN = 0.2;       // integration time
+const double CFL = 0.9;        // Courant number
+const double dtprint = 0.005;   // time interval to write to disk
 
 const double gam=1.4;
 
@@ -27,10 +27,9 @@ const double X0 = 0.5;
 // for advection: wave's velocity
 const double A = 1.0;
 
-// Constantes derivadas de las anteriores
 const double DX = (XR-XL)/NX;      // space between nodes
 
-// Variables globales
+// global variales
 double U[ieq][NX+2];       // "current" conservative variables
 double UP[ieq][NX+2];      // "advanced" conservative variables
 double F[ieq][NX+2];       // physical fluxes
@@ -41,7 +40,7 @@ double csr[ieq][NX+2];
 double csl[ieq][NX+2];
 
 double dt;            // time step
-double t;          // currrent time
+double t;             // currrent time
 int it;               // current iteration
 clock_t start;        // initial time
 double tprint;        // time for the following output
@@ -53,7 +52,7 @@ int itprint;          // output number
 // sets initial conditions
 void initflow(double U[ieq][NX+2]) {
 
-// initialize U in all the domain
+// initializes U in all the domain
 // including ghost cells
 double x, rho, u, pres;
 const double rhol=1.0;
@@ -81,7 +80,7 @@ const double pres_r=0.1;
   }
 
 
-  // Initialize other variables
+  // Initializes other variables
   t = 0;
   it = 0;
   itprint = 0;
@@ -111,7 +110,7 @@ void output(double P[ieq][NX+2]) {
   // closes the file
   fout.close();
 
-  printf("Se escribió salida %s\n", fname);
+  printf("Output %s\n", fname);
 
   itprint = itprint + 1;
   tprint = itprint * dtprint;
@@ -336,6 +335,6 @@ int main() {
   }
 
 // end
-cout << "\nSe calcularon " << it << " iteraciones en "
+cout << "\n Number of iterations: " << it << ". Time: "
      << (double)(clock() - start)/CLOCKS_PER_SEC << "s.\n\n";
 }
