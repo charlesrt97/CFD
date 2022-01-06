@@ -48,8 +48,8 @@ int itprint;          // output number
 // sets initial conditions
 void initflow(double U[ieq][NX+2]) {
 
-// initialize U in all the domain
-// including ghost cells
+// initializes U in all the domain
+// includes ghost cells
 double x, rho, u, pres;
 const double rhol=1.0;
 const double ul=0.0;
@@ -76,7 +76,7 @@ const double pres_r=0.1;
   }
 
 
-  // Initialize other variables
+  // Initializes other variables
   t = 0;
   it = 0;
   itprint = 0;
@@ -106,7 +106,7 @@ void output(double U[ieq][NX+2]) {
   // closes the file
   fout.close();
 
-  printf("Se escribió salida %s\n", fname);
+  printf("Output %s\n", fname);
 
   itprint = itprint + 1;
   tprint = itprint * dtprint;
@@ -127,7 +127,7 @@ void boundary(double U[ieq][NX+2]) {
 /******************************************************************************/
 
 // computes primitives, including ghost cells
-void primitivas(double U[ieq][NX+2], double P[ieq][NX+2]) {
+void primitives(double U[ieq][NX+2], double P[ieq][NX+2]) {
 
   for (int i=0; i<=NX+1;i++) {
     //F[i]=A*U[i];
@@ -249,7 +249,7 @@ int main() {
   // initial conditions and initializes variables
   initflow(U);
 
-  primitivas(U,P);
+  primitives(U,P);
 
   // writes initial conditions to disk
   output(U);
@@ -258,7 +258,7 @@ int main() {
   start = clock();
   while (t <= TFIN) {
 
-    primitivas(U,P);
+    primitives(U,P);
 
     // updates time step
     dt = timestep(P);
@@ -280,13 +280,13 @@ int main() {
 
     // writes to disk
     if (t >= tprint) {
-      primitivas(U,P);
+      primitives(U,P);
       output(U);
     }
 
   }
 
 // end
-cout << "\nSe calcularon " << it << " iteraciones en "
+cout << "\n Number of iterations: " << it << ". Time: "
      << (double)(clock() - start)/CLOCKS_PER_SEC << "s.\n\n";
 }
